@@ -1,0 +1,161 @@
+<div class="d-flex">
+  <div class="form-inline mr-auto">
+    <div class="form-group mb-2">
+      <label class="mr-2">Filtro:</label>
+      <input type="text" class="form-control mr-2" placeholder="buscar pelo nome">
+    </div>
+  </div>
+  <div>
+    <button class="btn btn-outline-primary" (click)="addPessoa(template)">
+      <i class="fa fa-plus-circle"></i>&nbsp;
+      Nova Pessoa
+    </button>
+  </div>
+</div>
+<!-- Tabela de Pessoas -->
+<table class="table table-striped">
+  <thead class="thead-light">
+    <tr>
+      <th>#</th>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>E-mail</th>
+      <th>Telefone</th>
+      <th>Sexo</th>
+      <th>Dt. Nascimento</th>
+      <th>Opções</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="pessoas && pessoas.length">
+    <tr *ngFor="let pessoa of pessoas">
+      <td>{{pessoa.id}}</td>
+      <td>{{pessoa.nome}}</td>
+      <td>{{pessoa.cpf}}</td>
+      <td>{{pessoa.email}}</td>
+      <td>{{pessoa.telefone}}</td>
+      <td>{{pessoa.sexo}}</td>
+      <td>{{pessoa.dataNascimento | date:'d/M/Y'}}</td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-warning" tooltip="Editar" (click)="editPessoa(pessoa, template)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" tooltip="Excluir" (click)="delPessoa(pessoa, confirm)">
+            <i class="fa fa-eraser"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="!pessoas || !pessoas.length">
+    <tr>
+      <td colspan="7" class="text-center">
+        <h5>Nenhuma pessoa encontrada ou cadastrada</h5>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+<!---->
+
+<!-- Modal Registrar Pessoa -->
+<div bsModal #template="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Registrar</h4>
+        <button type="button" class="close pull-right" (click)="template.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerForm">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>Nome</label>
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': registerForm.get('nome').errors && registerForm.get('nome').touched}"
+                formControlName="nome" placeholder="">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label>CPF</label>
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': registerForm.get('cpf').errors && registerForm.get('cpf').touched}"
+                formControlName="cpf" placeholder="">
+            </div>
+            <div class="form-group col-md-4">
+              <label>Data Nascimento</label>
+              <input type="text" class="form-control" bsDatepicker value="{{dataNascimento | date: 'd/M/y'}}"
+                [(ngModel)]="dataNascimento" [bsConfig]="{dateInputFormat: 'DD/MM/YYYY'}" 
+                [ngClass]="{'is-invalid': registerForm.get('dataNascimento').errors && registerForm.get('dataNascimento').touched}"
+                formControlName="dataNascimento" placeholder="">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Telefone</label>
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': registerForm.get('telefone').errors && registerForm.get('telefone').touched}"
+                formControlName="telefone" placeholder="">                
+            </div>
+            <div class="form-group col-md-8">
+              <label>Email</label>
+              <input type="text" class="form-control"
+                [ngClass]="{'is-invalid': registerForm.get('email').errors && registerForm.get('email').touched}"
+                formControlName="email" placeholder="">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Sexo</label>
+              <select class="form-control" 
+                [ngClass]="{'is-invalid': registerForm.get('telefone').errors && registerForm.get('telefone').touched}"
+                formControlName="sexo">                
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer d-flex">
+        <button class="btn btn-secondary" (click)="template.hide()">
+          Fechar
+        </button>
+        <button class="btn btn-primary ml-auto" [disabled]="!registerForm.valid" (click)="savePessoa(template)">
+          Salvar Alterações
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- -->
+
+<!-- Modal Confirmação -->
+<div bsModal #confirm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+	<div class="modal-dialog modal-sm">
+  		<div class="modal-content">
+    		<div class="modal-header">
+      			<h4 class="modal-title pull-left">
+        			Deletando Evento
+      			</h4>
+      			<button type="button" class="close pull-right" (click)="confirm.hide()" aria-label="Close">
+        			<span aria-hidden="true">&times;</span>
+      			</button>
+    		</div>
+    		<div class="modal-body">
+      			<p>{{bodyDeletarPessoa}}</p>
+    		</div>    
+    		<div class="modal-footer btn-group d-flex">      
+      			<button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
+        			CENCELAR
+      			</button>
+      			<button type="button" class="btn btn-outline-danger" (click)="confirmDelete(confirm)">
+          			DELETAR
+        		</button>
+    		</div>
+  		</div>
+	</div>
+</div>
+<!-- -->
