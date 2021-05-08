@@ -12,6 +12,7 @@ namespace TestePessoaWeb.Repository
         public TestePessoaRepository(TestePessoaContext context)
         {
             _context = context;
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
         public void Add<T>(T entity) where T : class
         {

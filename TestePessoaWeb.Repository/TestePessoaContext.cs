@@ -7,7 +7,11 @@ namespace TestePessoaWeb.Repository
     {
         public TestePessoaContext(DbContextOptions<TestePessoaContext> options) : base(options)
         { }
-
         public DbSet<Pessoa> Pessoas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {            
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

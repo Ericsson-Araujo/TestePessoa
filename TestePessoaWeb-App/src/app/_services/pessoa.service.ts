@@ -14,7 +14,19 @@ export class PessoaService {
         return this.http.get<Pessoa[]>(this.baseUrl);
     }
 
+    getPessoasByName(name: string): Observable<Pessoa[]> {
+        return this.http.get<Pessoa[]>(`${this.baseUrl}/getByName/${name}`);
+    }
+
     postPessoa(pessoa: Pessoa) {
         return this.http.post(this.baseUrl, pessoa);
+    }
+
+    putPessoa(pessoa: Pessoa) {
+        return this.http.put(`${this.baseUrl}/${pessoa.id}`, pessoa);
+    }
+
+    deletePessoa(id: number) {
+        return this.http.delete(`${this.baseUrl}/${id}`);
     }
 }

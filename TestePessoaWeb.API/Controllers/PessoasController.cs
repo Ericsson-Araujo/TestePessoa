@@ -91,15 +91,15 @@ namespace TestePessoaWeb.API.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{Id}")]
-        public async Task<IActionResult> Put(int Id, Pessoa model)
+        [HttpPut("{PessoaId}")]
+        public async Task<IActionResult> Put(int PessoaId, Pessoa model)
         {
             try
             {
-                if (model == null || model.Id != Id)
+                if (model == null || model.Id != PessoaId)
                     return BadRequest();
 
-                Pessoa pessoa = await _repo.GetPessoaAsyncById(Id);
+                Pessoa pessoa = await _repo.GetPessoaAsyncById(PessoaId);
 
                 if (pessoa == null)
                     return NotFound();

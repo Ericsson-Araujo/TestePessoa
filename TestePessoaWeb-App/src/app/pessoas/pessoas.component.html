@@ -1,8 +1,8 @@
 <div class="d-flex">
   <div class="form-inline mr-auto">
-    <div class="form-group mb-2">
-      <label class="mr-2">Filtro:</label>
-      <input type="text" class="form-control mr-2" placeholder="buscar pelo nome">
+    <div class="form-group mb-2">      
+      <input type="text" [(ngModel)]="textFilter" class="form-control mr-2" placeholder="buscar pelo nome">
+      <button class="btn" (click)="filtrar()">Filtrar</button>
     </div>
   </div>
   <div>
@@ -34,7 +34,7 @@
       <td>{{pessoa.email}}</td>
       <td>{{pessoa.telefone}}</td>
       <td>{{pessoa.sexo}}</td>
-      <td>{{pessoa.dataNascimento | date:'d/M/Y'}}</td>
+      <td>{{pessoa.dataNascimento | date:'d/M/y'}}</td>
       <td>
         <div class="btn-group">
           <button class="btn btn-sm btn-warning" tooltip="Editar" (click)="editPessoa(pessoa, template)">
